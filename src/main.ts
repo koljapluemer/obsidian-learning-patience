@@ -22,6 +22,7 @@ export default class MyPlugin extends Plugin {
     settings: MyPluginSettings;
 
     async onload() {
+        console.log('loading plugin: PATIENCE');  
         await this.loadSettings();
 
         this.registerView(
@@ -31,6 +32,7 @@ export default class MyPlugin extends Plugin {
 
         this.addRibbonIcon('dice', 'Open my view', (evt) => {
             this.activateView()
+            console.log('Ribbon icon clicked');
         })
 
     }
