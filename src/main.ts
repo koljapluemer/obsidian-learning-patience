@@ -30,7 +30,7 @@ export default class MyPlugin extends Plugin {
             (leaf) => new MyView(leaf)
         )
 
-        this.addRibbonIcon('dice', 'Open my view', (evt) => {
+        this.addRibbonIcon('triangle', 'Open my view', (evt) => {
             this.activateView()
             console.log('Ribbon icon clicked');
         })
