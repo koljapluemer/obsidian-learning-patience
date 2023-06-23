@@ -50,7 +50,7 @@ export default class MyPlugin extends Plugin {
     }
     async activateView() {
         if (this.app.workspace.getLeavesOfType(VIEW_TYPE).length === 0) {
-            await this.app.workspace.getRightLeaf(false).setViewState({
+            await this.app.workspace.getLeaf(false).setViewState({
                 type: VIEW_TYPE,
                 active: true,
             })

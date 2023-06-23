@@ -1,10 +1,8 @@
 <template>
 	<h2>Hello,Developer!</h2>
-    <div id="row" v-for="row in rows">
-        <div class="card" v-for="card in row">
-            hi
-        </div>
-    </div>
+	<div id="row" v-for="row in rows">
+		<div class="card" v-for="card in row">{{ card }}</div>
+	</div>
 </template>
 
 <script setup lang="tsx">
@@ -35,12 +33,25 @@ const notes = allNotesWithTag
 	.slice(0, 30);
 console.log(notes);
 
-let rows = ref([
-	[{}, {}, {}, {}, {}, {}, {}],
-	[{}, {}, {}, {}, {}],
-	[{}, {}, {}, {}, {}],
-	[{}, {}, {}],
-]);
+const cards = ref([]);
+
+const generateCards = async () => {
+	this.cards = await Promise.all(
+		notes.map(async (note) => await this.app.vault.read(note))
+	);
+	console.log("only content", this.cards);
+};
+let rows = ref([[], [], [], []]);
+console.log("relevant row", rows.value);
+
+
+generateCards().then(() => {
+	// fill last row with 3 random notes
+	randomNotes = this.cards.sort(() => Math.random() - Math.random()).slice(0, 3);
+    console.log("random notes", randomNotes);
+    rows.value[3] = randomNotes;
+});
+
 </script>
 
 <style scoped>
@@ -49,6 +60,6 @@ h2 {
 }
 
 .card {
-    border: 1px solid #ddd;
+	border: 1px solid #ddd;
 }
 </style>
