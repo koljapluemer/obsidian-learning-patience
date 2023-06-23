@@ -1,6 +1,6 @@
 <template>
 	<h2>Hello,Developer!</h2>
-	<div id="row" v-for="row in rows">
+	<div class="row" v-for="row in rows">
 		<div class="card" v-for="card in row">
 			<div id="front" v-if="!card.revealed">
 				<p>
@@ -12,8 +12,8 @@
 			<div id="back" v-else>
 				{{ card.back }}
 				<div class="button-row">
-					<button>Wrong</button>
-					<button>Correct</button>
+					<button @click="handleWrong(card)">Wrong</button>
+					<button @click="handleRight(card)">Correct</button>
 				</div>
 			</div>
 		</div>
@@ -36,7 +36,7 @@ const allNotesWithTag = app.vault.getMarkdownFiles().filter((note) => {
 	let willBeIncluded = false;
 	const tags = this.app.metadataCache.getFileCache(note)?.tags;
 	if (tags) {
-		if (tags.filter((tag) => tag.tag === "#ux-vr").length > 0) {
+		if (tags.filter((tag) => tag.tag === "#ux_vr").length > 0) {
 			willBeIncluded = true;
 		}
 	}
@@ -70,7 +70,10 @@ const generateCards = async () => {
 						back = splitCard[1];
 					}
 
-					console.log("front", front);
+					// remove every word starting with # (words are separated by spaces, dashes do not end words)
+					front = front.replace(/#\w+/g, "");
+					back = back.replace(/#\w+/g, "");
+
 
 					return {
 						front: front,
@@ -80,6 +83,16 @@ const generateCards = async () => {
 				})
 		)
 	);
+};
+
+const handleRight = (card) => {
+	card.revealed = false;
+	// remove from current array, and add to the array above
+	const currentRowOfCard = rows.value.findIndex((row) => row.includes(card));
+	const currentRowIndex = rows.value[currentRowOfCard].indexOf(card);
+	rows.value[currentRowOfCard].splice(currentRowIndex, 1);
+	rows.value[currentRowOfCard - 1].push(card);
+
 };
 
 console.log("only content", this.cards);
@@ -103,5 +116,18 @@ h2 {
 
 .card {
 	border: 1px solid #ddd;
+	display: grid;
+	place-items: center;
+}
+
+#front {
+	display: grid;
+	place-items: center;
+}
+
+.row {
+	display: flex;
+	gap: 8px;
+	margin-bottom: 8px;
 }
 </style>

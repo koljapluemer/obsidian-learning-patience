@@ -5,6 +5,17 @@ h2[data-v-ea994a51] {
 }
 .card[data-v-ea994a51] {
   border: 1px solid #ddd;
+  display: grid;
+  place-items: center;
+}
+#front[data-v-ea994a51] {
+  display: grid;
+  place-items: center;
+}
+.row[data-v-ea994a51] {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
 }
 
 /* src/main.css */
