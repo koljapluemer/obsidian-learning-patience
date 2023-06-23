@@ -2,7 +2,7 @@
 	<h2>Hello,Developer!</h2>
 	<div id="row" v-for="row in rows">
 		<div class="card" v-for="card in row">
-			hi: {{ getCardData(card) }}
+			{{ card.front }}
 		</div>
 	</div>
 </template>
@@ -38,43 +38,48 @@ console.log(notes);
 const cards = ref([]);
 this.cards = notes;
 
-// const generateCards = async () => {
-// 	this.cards = await Promise.all(
-// 		notes.map(async (note) => await this.app.vault.read(note))
-// 	);
-// 	console.log("only content", this.cards);
-// };
+const generateCards = async () => {
+	this.cards = await Promise.all(
+		notes.map(
+			async (note) =>
+				await this.app.vault.read(note).then((content) => {
+					const splitCard = content.split("---");
+					const metadata = this.app.metadataCache.getFileCache(note);
+
+					let front = "";
+					let back = "";
+
+					if (metadata?.frontmatter || splitCard.length > 2) {
+						front = splitCard[2];
+						back = splitCard[3];
+					} else {
+						front = splitCard[0];
+						back = splitCard[1];
+					}
+
+					console.log("front", front);
+
+					return {
+						front: front,
+						back: back,
+					};
+				})
+		)
+	);
+};
+
+console.log("only content", this.cards);
 let rows = ref([[], [], [], []]);
 console.log("relevant row", rows.value);
 
-// generateCards().then(() => {
-// fill last row with 3 random notes
-randomNotes = this.cards.sort(() => Math.random() - Math.random()).slice(0, 3);
-console.log("random notes", randomNotes);
-rows.value[3] = randomNotes;
-// });
-
-const getCardData = (card) => {
-	const content = this.app.vault.read(card).then((content) => {
-		const splitCard = content.split("---");
-
-		// if metadata has property frontmatter, treat differently
-		const metadata = this.app.metadataCache.getFileCache(card);
-		// console.log("metadata of note", metadata);
-		let front = "";
-		let back = "";
-		// check if frontmatter exists, or if content has more than one ---
-		if (metadata?.frontmatter || splitCard.length > 2) {
-			front = splitCard[2];
-			back = splitCard[3];
-		} else {
-			front = splitCard[0];
-			back = splitCard[1];
-		}
-		console.log("front", front);
-		return front
-	});
-};
+generateCards().then(() => {
+	// fill last row with 3 random notes
+	randomNotes = this.cards
+		.sort(() => Math.random() - Math.random())
+		.slice(0, 3);
+	console.log("random notes", randomNotes);
+	rows.value[3] = randomNotes;
+});
 </script>
 
 <style scoped>
