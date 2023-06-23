@@ -3,5 +3,8 @@
 h2[data-v-ea994a51] {
   color: lightcoral;
 }
+.card[data-v-ea994a51] {
+  border: 1px solid #ddd;
+}
 
 /* src/main.css */
