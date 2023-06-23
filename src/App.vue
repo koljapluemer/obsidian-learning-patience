@@ -2,7 +2,20 @@
 	<h2>Hello,Developer!</h2>
 	<div id="row" v-for="row in rows">
 		<div class="card" v-for="card in row">
-			{{ card.front }}
+			<div id="front" v-if="!card.revealed">
+				<p>
+					{{ card.front }}
+				</p>
+
+				<button @click="card.revealed = true">Reveal</button>
+			</div>
+			<div id="back" v-else>
+				{{ card.back }}
+				<div class="button-row">
+					<button>Wrong</button>
+					<button>Correct</button>
+				</div>
+			</div>
 		</div>
 	</div>
 </template>
@@ -62,6 +75,7 @@ const generateCards = async () => {
 					return {
 						front: front,
 						back: back,
+						revealed: false,
 					};
 				})
 		)
