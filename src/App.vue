@@ -1,5 +1,5 @@
 <template>
-	<h2>Hello,Developer!</h2>
+	<h2>The Learn Patience</h2>
 	<div class="row" v-for="row in rows">
 		<div class="card" v-for="card in row">
 			<div id="front">
@@ -26,7 +26,7 @@
 <script setup lang="tsx">
 import Hello from "./Hello";
 import Hi from "./Hi.vue";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 let hi = ref("");
 let HiHi = () => (
 	<h1>
@@ -104,7 +104,6 @@ const handleWrong = (card) => {
 	const currentRowIndex = rows.value[currentRowOfCard].indexOf(card);
 	rows.value[currentRowOfCard].splice(currentRowIndex, 1);
 	rows.value[3].push(card);
-	
 }
 
 console.log("only content", this.cards);
@@ -118,7 +117,28 @@ generateCards().then(() => {
 		.slice(0, 3);
 	console.log("random notes", randomNotes);
 	rows.value[3] = randomNotes;
+	// remove those 3 notes from the cards array
+	randomNotes.forEach((note) => {
+		const index = this.cards.indexOf(note);
+		this.cards.splice(index, 1);
+	});
 });
+
+// watch the last row of rows, and if it has less than 3 cards, add a new one
+watch(
+	() => rows,
+	() => {
+		console.log("rows changed", rows.value);
+		if (rows.value[3].length < 3) {
+			const newCard = this.cards[Math.floor(Math.random() * this.cards.length)];
+			rows.value[3].push(newCard);
+			const index = this.cards.indexOf(newCard);
+			this.cards.splice(index, 1);
+		}
+	},
+	{ deep: true }
+);
+
 </script>
 
 <style scoped>
