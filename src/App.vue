@@ -2,14 +2,17 @@
 	<h2>Hello,Developer!</h2>
 	<div class="row" v-for="row in rows">
 		<div class="card" v-for="card in row">
-			<div id="front" v-if="!card.revealed">
+			<div id="front">
 				<p>
 					{{ card.front }}
 				</p>
 
-				<button @click="card.revealed = true">Reveal</button>
+				<button  v-if="!card.revealed" @click="card.revealed = true">Reveal</button>
 			</div>
-			<div id="back" v-else>
+			<div id="back"  v-if="card.revealed">
+			<p>
+			---
+			</p>
 				{{ card.back }}
 				<div class="button-row">
 					<button @click="handleWrong(card)">Wrong</button>
@@ -92,8 +95,17 @@ const handleRight = (card) => {
 	const currentRowIndex = rows.value[currentRowOfCard].indexOf(card);
 	rows.value[currentRowOfCard].splice(currentRowIndex, 1);
 	rows.value[currentRowOfCard - 1].push(card);
-
 };
+
+const handleWrong = (card) => {
+	card.revealed = false;
+	// remove from current array, and add to the last array, at the end
+	const currentRowOfCard = rows.value.findIndex((row) => row.includes(card));
+	const currentRowIndex = rows.value[currentRowOfCard].indexOf(card);
+	rows.value[currentRowOfCard].splice(currentRowIndex, 1);
+	rows.value[3].push(card);
+	
+}
 
 console.log("only content", this.cards);
 let rows = ref([[], [], [], []]);
