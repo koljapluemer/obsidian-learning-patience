@@ -4,7 +4,10 @@
 		<div v-for="card in row" :key="card" class="card">
 			<div id="front">
 				<p>{{ card.front }}</p>
-				<button v-if="!card.revealed" @click="card.revealed = true">
+				<button
+					v-if="!card.revealed && activeCard == card.front"
+					@click="card.revealed = true"
+				>
 					Reveal
 				</button>
 			</div>
@@ -108,6 +111,8 @@ console.log("only content", this.cards);
 let rows = ref([[], [], [], []]);
 console.log("relevant row", rows.value);
 
+const activeCard = ref(null);
+
 generateCards().then(() => {
 	// fill last row with 3 random notes
 	randomNotes = this.cards
@@ -120,19 +125,35 @@ generateCards().then(() => {
 		const index = this.cards.indexOf(note);
 		this.cards.splice(index, 1);
 	});
+
+	activeCard.value = rows.value[3][0].front;
 });
 
 // watch the last row of rows, and if it has less than 3 cards, add a new one
 watch(
 	() => rows,
 	() => {
-		console.log("rows changed", rows.value);
 		if (rows.value[3].length < 3) {
 			const newCard =
 				this.cards[Math.floor(Math.random() * this.cards.length)];
 			rows.value[3].push(newCard);
 			const index = this.cards.indexOf(newCard);
 			this.cards.splice(index, 1);
+		}
+		// if row[0] has 7 cards or more, activate its leftmost card
+		if (rows.value[0].length >= 7) {
+			activeCard.value = rows.value[0][0].front;
+		}
+		// row row[1] has 5 cards or more, activate its leftmost card
+		else if (rows.value[1].length >= 5) {
+			activeCard.value = rows.value[1][0].front;
+		}
+		// if row[2] has 5 cards are more, activate its leftmost card
+		else if (rows.value[2].length >= 5) {
+			activeCard.value = rows.value[2][0].front;
+		} else {
+			// by default, activate last row leftmost card
+			activeCard.value = rows.value[3][0].front;
 		}
 	},
 	{ deep: true }
@@ -159,6 +180,7 @@ h2 {
 	display: flex;
 	gap: 8px;
 	margin-bottom: 8px;
+	min-height: 120px;
 }
 
 .list-enter-active,

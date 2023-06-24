@@ -16,6 +16,7 @@ h2[data-v-ea994a51] {
   display: flex;
   gap: 8px;
   margin-bottom: 8px;
+  min-height: 120px;
 }
 .list-enter-active[data-v-ea994a51],
 .list-leave-active[data-v-ea994a51] {
