@@ -1,24 +1,22 @@
 <template>
 	<h2>The Learn Patience</h2>
 	<div v-for="row in rows" class="row">
-		<TransitionGroup name="list">
-			<template v-for="card in row" :key="card.front" class="card">
-				<div id="front">
-					<p>{{ card.front }}</p>
-					<button v-if="!card.revealed" @click="card.revealed = true">
-						Reveal
-					</button>
+		<div v-for="card in row" :key="card" class="card">
+			<div id="front">
+				<p>{{ card.front }}</p>
+				<button v-if="!card.revealed" @click="card.revealed = true">
+					Reveal
+				</button>
+			</div>
+			<div id="back" v-if="card.revealed">
+				<p>---</p>
+				{{ card.back }}
+				<div class="button-row">
+					<button @click="handleWrong(card)">Wrong</button>
+					<button @click="handleRight(card)">Correct</button>
 				</div>
-				<div id="back" v-if="card.revealed">
-					<p>---</p>
-					{{ card.back }}
-					<div class="button-row">
-						<button @click="handleWrong(card)">Wrong</button>
-						<button @click="handleRight(card)">Correct</button>
-					</div>
-				</div>
-			</template>
-		</TransitionGroup>
+			</div>
+		</div>
 	</div>
 </template>
 
