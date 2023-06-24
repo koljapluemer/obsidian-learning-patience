@@ -92,10 +92,16 @@ const generateCards = async () => {
 const handleRight = (card) => {
 	card.revealed = false;
 	// remove from current array, and add to the array above
+	// if it's in the first row, just remove  it
 	const currentRowOfCard = rows.value.findIndex((row) => row.includes(card));
 	const currentRowIndex = rows.value[currentRowOfCard].indexOf(card);
 	rows.value[currentRowOfCard].splice(currentRowIndex, 1);
-	rows.value[currentRowOfCard - 1].push(card);
+
+	if (currentRowOfCard == 0) {
+		return;
+	} else {
+		rows.value[currentRowOfCard - 1].push(card);
+	}
 };
 
 const handleWrong = (card) => {
