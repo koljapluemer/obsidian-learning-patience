@@ -1,25 +1,24 @@
 <template>
 	<h2>The Learn Patience</h2>
-	<div class="row" v-for="row in rows">
-		<div class="card" v-for="card in row">
-			<div id="front">
-				<p>
-					{{ card.front }}
-				</p>
-
-				<button  v-if="!card.revealed" @click="card.revealed = true">Reveal</button>
-			</div>
-			<div id="back"  v-if="card.revealed">
-			<p>
-			---
-			</p>
-				{{ card.back }}
-				<div class="button-row">
-					<button @click="handleWrong(card)">Wrong</button>
-					<button @click="handleRight(card)">Correct</button>
+	<div v-for="row in rows" class="row">
+		<TransitionGroup name="list">
+			<template v-for="card in row" :key="card.front" class="card">
+				<div id="front">
+					<p>{{ card.front }}</p>
+					<button v-if="!card.revealed" @click="card.revealed = true">
+						Reveal
+					</button>
 				</div>
-			</div>
-		</div>
+				<div id="back" v-if="card.revealed">
+					<p>---</p>
+					{{ card.back }}
+					<div class="button-row">
+						<button @click="handleWrong(card)">Wrong</button>
+						<button @click="handleRight(card)">Correct</button>
+					</div>
+				</div>
+			</template>
+		</TransitionGroup>
 	</div>
 </template>
 
@@ -27,6 +26,8 @@
 import Hello from "./Hello";
 import Hi from "./Hi.vue";
 import { ref, watch } from "vue";
+import { Transition } from "vue";
+
 let hi = ref("");
 let HiHi = () => (
 	<h1>
@@ -77,7 +78,6 @@ const generateCards = async () => {
 					front = front.replace(/#\w+/g, "");
 					back = back.replace(/#\w+/g, "");
 
-
 					return {
 						front: front,
 						back: back,
@@ -104,7 +104,7 @@ const handleWrong = (card) => {
 	const currentRowIndex = rows.value[currentRowOfCard].indexOf(card);
 	rows.value[currentRowOfCard].splice(currentRowIndex, 1);
 	rows.value[3].push(card);
-}
+};
 
 console.log("only content", this.cards);
 let rows = ref([[], [], [], []]);
@@ -130,7 +130,8 @@ watch(
 	() => {
 		console.log("rows changed", rows.value);
 		if (rows.value[3].length < 3) {
-			const newCard = this.cards[Math.floor(Math.random() * this.cards.length)];
+			const newCard =
+				this.cards[Math.floor(Math.random() * this.cards.length)];
 			rows.value[3].push(newCard);
 			const index = this.cards.indexOf(newCard);
 			this.cards.splice(index, 1);
@@ -138,7 +139,6 @@ watch(
 	},
 	{ deep: true }
 );
-
 </script>
 
 <style scoped>
@@ -161,5 +161,15 @@ h2 {
 	display: flex;
 	gap: 8px;
 	margin-bottom: 8px;
+}
+
+.list-enter-active,
+.list-leave-active {
+	transition: all 0.5s ease;
+}
+.list-enter-from,
+.list-leave-to {
+	opacity: 0;
+	transform: translateX(30px);
 }
 </style>
