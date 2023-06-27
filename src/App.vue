@@ -2,32 +2,24 @@
 	<h2>The Learn Patience</h2>
 	<TransitionGroup name="list">
 		<div v-for="row in rows" class="row">
-			<div v-for="card in row" :key="card" class="card">
-				<div id="front">
-					<p>{{ card.front }}</p>
-					<button
-						v-if="!card.revealed && activeCard == card.front"
-						@click="card.revealed = true"
-					>
-						Reveal
-					</button>
-				</div>
-				<div id="back" v-if="card.revealed">
-					<p>---</p>
-					{{ card.back }}
-					<div class="button-row">
-						<button @click="handleWrong(card)">Wrong</button>
-						<button @click="handleRight(card)">Correct</button>
-					</div>
-				</div>
-			</div>
+			<Card
+				v-for="card in row"
+				:key="card"
+				class="card"
+				:front="card.front"
+				:back="card.back"
+				:revealed="card.revealed"
+				:activeCard="activeCard"
+				@handleWrong="handleWrong(card)"
+				@handleRight="handleRight(card)"
+			></Card>
 		</div>
 	</TransitionGroup>
 </template>
 
 <script setup lang="tsx">
 import Hello from "./Hello";
-import Hi from "./Hi.vue";
+import Card from "./Card.vue";
 import { ref, watch } from "vue";
 import { Transition } from "vue";
 
@@ -107,6 +99,7 @@ const handleRight = (card) => {
 };
 
 const handleWrong = (card) => {
+	console.log("handle wrong");
 	card.revealed = false;
 	// remove from current array, and add to the last array, at the end
 	const currentRowOfCard = rows.value.findIndex((row) => row.includes(card));
@@ -173,11 +166,6 @@ h2 {
 	color: lightcoral;
 }
 
-.card {
-	border: 1px solid #ddd;
-	display: grid;
-	place-items: center;
-}
 
 #front {
 	display: grid;

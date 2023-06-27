@@ -1,12 +1,12 @@
 /* src/stalin.css */
 /* main.css */
-h2[data-v-ea994a51] {
-  color: lightcoral;
-}
-.card[data-v-ea994a51] {
+.card[data-v-040c75b6] {
   border: 1px solid #ddd;
   display: grid;
   place-items: center;
+}
+h2[data-v-ea994a51] {
+  color: lightcoral;
 }
 #front[data-v-ea994a51] {
   display: grid;
