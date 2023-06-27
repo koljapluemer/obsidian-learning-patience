@@ -27,5 +27,18 @@ h2[data-v-ea994a51] {
   opacity: 0;
   transform: translateX(30px);
 }
+.list-move[data-v-ea994a51],
+.list-enter-active[data-v-ea994a51],
+.list-leave-active[data-v-ea994a51] {
+  transition: all 0.5s ease;
+}
+.list-enter-from[data-v-ea994a51],
+.list-leave-to[data-v-ea994a51] {
+  opacity: 0;
+  transform: translateX(30px);
+}
+.list-leave-active[data-v-ea994a51] {
+  position: absolute;
+}
 
 /* src/main.css */

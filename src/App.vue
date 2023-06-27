@@ -1,11 +1,10 @@
 <template>
 	<h2>The Learn Patience</h2>
-	<TransitionGroup name="list">
-		<div v-for="row in rows" class="row">
+	<div v-for="row in rows" class="row">
+		<TransitionGroup name="list">
 			<Card
 				v-for="card in row"
-				:key="card"
-				class="card"
+				:key="card.front"
 				:front="card.front"
 				:back="card.back"
 				:revealed="card.revealed"
@@ -13,8 +12,8 @@
 				@handleWrong="handleWrong(card)"
 				@handleRight="handleRight(card)"
 			></Card>
-		</div>
-	</TransitionGroup>
+		</TransitionGroup>
+	</div>
 </template>
 
 <script setup lang="tsx">
@@ -166,7 +165,6 @@ h2 {
 	color: lightcoral;
 }
 
-
 #front {
 	display: grid;
 	place-items: center;
@@ -187,5 +185,23 @@ h2 {
 .list-leave-to {
 	opacity: 0;
 	transform: translateX(30px);
+}
+
+.list-move, /* apply transition to moving elements */
+.list-enter-active,
+.list-leave-active {
+	transition: all 0.5s ease;
+}
+
+.list-enter-from,
+.list-leave-to {
+	opacity: 0;
+	transform: translateX(30px);
+}
+
+/* ensure leaving items are taken out of layout flow so that moving
+   animations can be calculated correctly. */
+.list-leave-active {
+	position: absolute;
 }
 </style>
