@@ -1,5 +1,13 @@
 <template>
 	<h2>The Learn Patience</h2>
+	<meter
+		id="fuel"
+		min="3"
+		max="150"
+		low="50"
+		high="100"
+		:value="score"
+	></meter>
 	<div v-for="row in rows" class="row">
 		<TransitionGroup name="list">
 			<Card
@@ -17,17 +25,9 @@
 </template>
 
 <script setup lang="tsx">
-import Hello from "./Hello";
 import Card from "./Card.vue";
-import { ref, watch } from "vue";
+import { ref, watch, computed } from "vue";
 import { Transition } from "vue";
-
-let hi = ref("");
-let HiHi = () => (
-	<h1>
-		<Hello></Hello>
-	</h1>
-);
 
 // get all Obsidian notes with tag #vr
 const allNotesWithTag = app.vault.getMarkdownFiles().filter((note) => {
@@ -91,14 +91,13 @@ const handleRight = (card) => {
 	rows.value[currentRowOfCard].splice(currentRowIndex, 1);
 
 	if (currentRowOfCard == 0) {
-		return;
+		finishedCards.value.push(card);
 	} else {
 		rows.value[currentRowOfCard - 1].push(card);
 	}
 };
 
 const handleWrong = (card) => {
-	console.log("handle wrong");
 	card.revealed = false;
 	// remove from current array, and add to the last array, at the end
 	const currentRowOfCard = rows.value.findIndex((row) => row.includes(card));
@@ -107,9 +106,8 @@ const handleWrong = (card) => {
 	rows.value[3].push(card);
 };
 
-console.log("only content", this.cards);
 let rows = ref([[], [], [], []]);
-console.log("relevant row", rows.value);
+const finishedCards = ref([]);
 
 const activeCard = ref(null);
 
@@ -118,7 +116,6 @@ generateCards().then(() => {
 	randomNotes = this.cards
 		.sort(() => Math.random() - Math.random())
 		.slice(0, 3);
-	console.log("random notes", randomNotes);
 	rows.value[3] = randomNotes;
 	// remove those 3 notes from the cards array
 	randomNotes.forEach((note) => {
@@ -158,6 +155,17 @@ watch(
 	},
 	{ deep: true }
 );
+
+// calculate current score by: 5 points for every finished card, 4 points for every card in row 0, 3 points for every card in row 1, 2 points for every card in row 2, 1 point for every card in row 3
+const score = computed(() => {
+	let score = 0;
+	score += finishedCards.value.length * 5;
+	score += rows.value[0].length * 4;
+	score += rows.value[1].length * 3;
+	score += rows.value[2].length * 2;
+	score += rows.value[3].length * 1;
+	return score;
+});
 </script>
 
 <style scoped>
