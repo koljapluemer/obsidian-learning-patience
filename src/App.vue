@@ -29,12 +29,14 @@ import Card from "./Card.vue";
 import { ref, watch, computed } from "vue";
 import { Transition } from "vue";
 
+const learnTag = ref("______");
+
 // get all Obsidian notes with tag #vr
 const allNotesWithTag = app.vault.getMarkdownFiles().filter((note) => {
 	let willBeIncluded = false;
 	const tags = this.app.metadataCache.getFileCache(note)?.tags;
 	if (tags) {
-		if (tags.filter((tag) => tag.tag === "#ux_vr").length > 0) {
+		if (tags.filter((tag) => tag.tag === this.learnTag).length > 0) {
 			willBeIncluded = true;
 		}
 	}
@@ -166,6 +168,15 @@ const score = computed(() => {
 	score += rows.value[3].length * 1;
 	return score;
 });
+
+//  monitor localStorage for changes of variable "patience-tag"
+watch(
+	() => localStorage.getItem("patience-tag"),
+	() => {
+		this.learnTag = localStorage.getItem("patience-tag");
+		generateCards();
+	}
+);
 </script>
 
 <style scoped>

@@ -13,10 +13,10 @@ export class MyView extends ItemView {
         return VIEW_TYPE;
     }
     getDisplayText(): string {
-        return "Vue Stater";
+        return "Learn Patience";
     }
     getIcon(): string {
-        return "dice";
+        return "triangle";
     }
     async onOpen() {
         const container = this.containerEl.children[1];
