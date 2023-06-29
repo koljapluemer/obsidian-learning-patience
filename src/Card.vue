@@ -1,8 +1,7 @@
 <template>
 	<div class="card">
 		<div id="front">
-			<Markdown :source="front + '![](Pasted image 20230629185337.png)'" />
-
+			<Markdown :source="front" />
 			<button
 				v-if="!revealed && activeCard == front"
 				@click="revealed = true"
@@ -31,6 +30,8 @@ import {
 	MarkdownRenderer,
 	Component,
 } from "obsidian";
+import { ref, watch, computed } from "vue";
+
 const component = Component;
 
 defineProps<{
@@ -41,11 +42,18 @@ defineProps<{
 	content: string;
 }>();
 
-// log all image files in the vault
-const images = app.vault.getFiles().filter((file) => {
-	return file.path.endsWith(".png");
-});
-console.log("images", images);
+// // log all image files in the vault
+// const images = app.vault.getFiles().filter((file) => {
+// 	return file.path.endsWith(".png");
+// });
+// const firstImage = images[0];
+// const renderedImg = ref("");
+// // open as binary file so it can be displayed
+// app.vault.readBinary(firstImage).then((image) => {
+// 	console.log('Image', image);
+// 	const blob = new Blob([image], { type: "image/png" });
+// 	renderedImg.value = URL.createObjectURL(blob);
+// });
 </script>
 
 <style scoped>

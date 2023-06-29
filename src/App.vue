@@ -52,7 +52,7 @@ const cards = ref([]);
 const generateCards = async () => {
 	learnTagSet.value = true;
 
-	console.log("generating cards with tag", learnTag.value);
+	
 
 	// get all Obsidian notes with tag #vr
 	const allNotesWithTag = app.vault.getMarkdownFiles().filter((note) => {
@@ -70,7 +70,7 @@ const generateCards = async () => {
 	const notes = allNotesWithTag
 		.sort(() => Math.random() - Math.random())
 		.slice(0, 30);
-	console.log("picked notes:", notes);
+	
 
 	
 
@@ -80,8 +80,8 @@ const generateCards = async () => {
 				await this.app.vault.read(note).then((content) => {
 					const splitCard = content.split("---");
 					const metadata = this.app.metadataCache.getFileCache(note);
-					console.log("METADATA\n", metadata);
-					console.log("CONTENT\n", content);
+					
+					
 
 					let front = "";
 					let back = "";
@@ -105,7 +105,7 @@ const generateCards = async () => {
 							revealed: false,
 						};
 					} catch (error) {
-						console.log(error, note);
+						
 						return {
 							front: "error",
 							back: "error",
