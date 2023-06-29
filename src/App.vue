@@ -45,6 +45,9 @@ const learnTagSet = ref(false);
 
 const cards = ref([]);
 
+// expose Markdown component to template
+
+
 const generateCards = async () => {
 	learnTagSet.value = true;
 
