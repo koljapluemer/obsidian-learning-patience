@@ -71,12 +71,15 @@ const generateCards = async () => {
 		.slice(0, 30);
 	console.log("picked notes:", notes);
 
+	
+
 	this.cards = await Promise.all(
 		notes.map(
 			async (note) =>
 				await this.app.vault.read(note).then((content) => {
 					const splitCard = content.split("---");
 					const metadata = this.app.metadataCache.getFileCache(note);
+					console.log("METADATA\n", metadata);
 
 					let front = "";
 					let back = "";
