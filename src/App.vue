@@ -72,23 +72,32 @@ const generateCards = async () => {
 					let front = "";
 					let back = "";
 
-					if (metadata?.frontmatter || splitCard.length > 2) {
-						front = splitCard[2];
-						back = splitCard[3];
-					} else {
-						front = splitCard[0];
-						back = splitCard[1];
+					try {
+						if (metadata?.frontmatter || splitCard.length > 2) {
+							front = splitCard[2];
+							back = splitCard[3];
+						} else {
+							front = splitCard[0];
+							back = splitCard[1];
+						}
+
+						// remove every word starting with # (words are separated by spaces, dashes do not end words)
+						front = front.replace(/#\w+/g, "");
+						back = back.replace(/#\w+/g, "");
+
+						return {
+							front: front,
+							back: back,
+							revealed: false,
+						};
+					} catch (error) {
+						console.log(error, note);
+						return {
+							front: "error",
+							back: "error",
+							revealed: false,
+						};
 					}
-
-					// remove every word starting with # (words are separated by spaces, dashes do not end words)
-					front = front.replace(/#\w+/g, "");
-					back = back.replace(/#\w+/g, "");
-
-					return {
-						front: front,
-						back: back,
-						revealed: false,
-					};
 				})
 		)
 	);
@@ -140,27 +149,31 @@ const activeCard = ref(null);
 watch(
 	() => rows,
 	() => {
-		if (rows.value[3].length < 3) {
-			const newCard =
-				this.cards[Math.floor(Math.random() * this.cards.length)];
-			rows.value[3].push(newCard);
-			const index = this.cards.indexOf(newCard);
-			this.cards.splice(index, 1);
-		}
-		// if row[0] has 7 cards or more, activate its leftmost card
-		if (rows.value[0].length >= 7) {
-			activeCard.value = rows.value[0][0].front;
-		}
-		// row row[1] has 5 cards or more, activate its leftmost card
-		else if (rows.value[1].length >= 5) {
-			activeCard.value = rows.value[1][0].front;
-		}
-		// if row[2] has 5 cards are more, activate its leftmost card
-		else if (rows.value[2].length >= 5) {
-			activeCard.value = rows.value[2][0].front;
-		} else {
-			// by default, activate last row leftmost card
-			activeCard.value = rows.value[3][0].front;
+		// if cards exist
+		if (this.cards.length > 0) {
+			// if row[3] has less than 3 cards, add a new one
+			if (rows.value[3].length < 3) {
+				const newCard =
+					this.cards[Math.floor(Math.random() * this.cards.length)];
+				rows.value[3].push(newCard);
+				const index = this.cards.indexOf(newCard);
+				this.cards.splice(index, 1);
+			}
+			// if row[0] has 7 cards or more, activate its leftmost card
+			if (rows.value[0].length >= 7) {
+				activeCard.value = rows.value[0][0].front;
+			}
+			// row row[1] has 5 cards or more, activate its leftmost card
+			else if (rows.value[1].length >= 5) {
+				activeCard.value = rows.value[1][0].front;
+			}
+			// if row[2] has 5 cards are more, activate its leftmost card
+			else if (rows.value[2].length >= 5) {
+				activeCard.value = rows.value[2][0].front;
+			} else {
+				// by default, activate last row leftmost card
+				activeCard.value = rows.value[3][0].front;
+			}
 		}
 	},
 	{ deep: true }
