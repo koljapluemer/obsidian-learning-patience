@@ -1,7 +1,8 @@
 <template>
 	<div class="card">
 		<div id="front">
-			<div id="front-view"></div>
+					<Markdown :source="front" />
+
 			<button
 				v-if="!revealed && activeCard == front"
 				@click="revealed = true"
@@ -10,7 +11,7 @@
 			</button>
 		</div>
 		<div id="back" v-if="revealed">
-			<!-- <Markdown :source="'---\n\n' + back" /> -->
+			<Markdown :source="'---\n\n' + back" />
 
 			<div class="button-row">
 				<button @click="$emit('handleWrong')" id="wrong">Wrong</button>
@@ -32,19 +33,15 @@ import {
 } from "obsidian";
 const component = Component;
 
-const frontView = document.getElementById("front-view");
-console.log("front view", frontView);
 
 defineProps<{
 	front: string;
 	back: string;
 	revealed: boolean;
 	activeCard: string;
+	content: string;
 }>();
 
-console.log("front", this.front);
-
-MarkdownRenderer.renderMarkdown("**hi**", frontView);
 </script>
 
 <style scoped>

@@ -26,6 +26,7 @@
 					:back="card.back"
 					:revealed="card.revealed"
 					:activeCard="activeCard"
+					:content="card.content"
 					@handleWrong="handleWrong(card)"
 					@handleRight="handleRight(card)"
 				></Card>
@@ -80,6 +81,7 @@ const generateCards = async () => {
 					const splitCard = content.split("---");
 					const metadata = this.app.metadataCache.getFileCache(note);
 					console.log("METADATA\n", metadata);
+					console.log("CONTENT\n", content);
 
 					let front = "";
 					let back = "";
@@ -96,7 +98,7 @@ const generateCards = async () => {
 						// remove every word starting with # (words are separated by spaces, dashes do not end words)
 						front = front.replace(/#\w+/g, "");
 						back = back.replace(/#\w+/g, "");
-
+						
 						return {
 							front: front,
 							back: back,
@@ -108,6 +110,7 @@ const generateCards = async () => {
 							front: "error",
 							back: "error",
 							revealed: false,
+							content: content,
 						};
 					}
 				})
