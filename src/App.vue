@@ -39,28 +39,29 @@ import { Transition } from "vue";
 const learnTag = ref("");
 const learnTagSet = ref(false);
 
-// get all Obsidian notes with tag #vr
-const allNotesWithTag = app.vault.getMarkdownFiles().filter((note) => {
-	let willBeIncluded = false;
-	const tags = this.app.metadataCache.getFileCache(note)?.tags;
-	if (tags) {
-		if (tags.filter((tag) => tag.tag === this.learnTag).length > 0) {
-			willBeIncluded = true;
-		}
-	}
-	return willBeIncluded;
-});
-// pick 30 randomly
-const notes = allNotesWithTag
-	.sort(() => Math.random() - Math.random())
-	.slice(0, 30);
-console.log(notes);
-
 const cards = ref([]);
-this.cards = notes;
 
 const generateCards = async () => {
-	learnTagSet = true
+	learnTagSet.value = true;
+
+	// get all Obsidian notes with tag #vr
+	const allNotesWithTag = app.vault.getMarkdownFiles().filter((note) => {
+		let willBeIncluded = false;
+		const tags = this.app.metadataCache.getFileCache(note)?.tags;
+		if (tags) {
+			if (tags.filter((tag) => tag.tag === this.learnTag).length > 0) {
+				willBeIncluded = true;
+			}
+		}
+		return willBeIncluded;
+	});
+
+	// pick 30 randomly
+	const notes = allNotesWithTag
+		.sort(() => Math.random() - Math.random())
+		.slice(0, 30);
+	console.log(notes);
+
 	this.cards = await Promise.all(
 		notes.map(
 			async (note) =>
@@ -175,15 +176,6 @@ const score = computed(() => {
 	score += rows.value[3].length * 1;
 	return score;
 });
-
-//  monitor localStorage for changes of variable "patience-tag"
-watch(
-	() => localStorage.getItem("patience-tag"),
-	() => {
-		this.learnTag = localStorage.getItem("patience-tag");
-		generateCards();
-	}
-);
 </script>
 
 <style scoped>
