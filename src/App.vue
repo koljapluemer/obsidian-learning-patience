@@ -31,6 +31,7 @@
 				></Card>
 			</TransitionGroup>
 		</div>
+	
 	</div>
 </template>
 

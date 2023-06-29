@@ -13,8 +13,8 @@
 			<p>---</p>
 			{{ back }}
 			<div class="button-row">
-				<button @click="$emit('handleWrong')">Wrong</button>
-				<button @click="$emit('handleRight')">Correct</button>
+				<button @click="$emit('handleWrong')" id="wrong">Wrong</button>
+				<button @click="$emit('handleRight')" id="correct">Correct</button>
 			</div>
 		</div>
 	</div>
@@ -37,4 +37,13 @@ defineProps<{
 	display: grid;
 	place-items: center;
 }
+
+#wrong {
+	background-color: #c62d2d;
+}
+
+#correct {
+	background-color: #1e9e47;
+}
+
 </style>

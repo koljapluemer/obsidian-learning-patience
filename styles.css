@@ -5,6 +5,12 @@
   display: grid;
   place-items: center;
 }
+#wrong[data-v-040c75b6] {
+  background-color: #c62d2d;
+}
+#correct[data-v-040c75b6] {
+  background-color: #1e9e47;
+}
 h2[data-v-ea994a51] {
   color: lightcoral;
 }
