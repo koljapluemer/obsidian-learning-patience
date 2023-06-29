@@ -1,7 +1,7 @@
 <template>
 	<div class="card">
 		<div id="front">
-			<Markdown :source="front" />
+			<div id="front-view"></div>
 			<button
 				v-if="!revealed && activeCard == front"
 				@click="revealed = true"
@@ -10,7 +10,7 @@
 			</button>
 		</div>
 		<div id="back" v-if="revealed">
-			<Markdown :source="'---\n\n' + back" />
+			<!-- <Markdown :source="'---\n\n' + back" /> -->
 
 			<div class="button-row">
 				<button @click="$emit('handleWrong')" id="wrong">Wrong</button>
@@ -24,6 +24,16 @@
 
 <script setup lang="ts">
 import Markdown from "vue3-markdown-it";
+import {
+	MarkdownView,
+	MarkdownPreviewView,
+	MarkdownRenderer,
+	Component,
+} from "obsidian";
+const component = Component;
+
+const frontView = document.getElementById("front-view");
+console.log("front view", frontView);
 
 defineProps<{
 	front: string;
@@ -31,6 +41,10 @@ defineProps<{
 	revealed: boolean;
 	activeCard: string;
 }>();
+
+console.log("front", this.front);
+
+MarkdownRenderer.renderMarkdown("**hi**", frontView);
 </script>
 
 <style scoped>
