@@ -1,10 +1,11 @@
 <template>
-	<div class="card">
+	<div :class="{card: true, active: activeCard == front}">
 		<div id="front">
 			<Markdown :source="front" />
 			<button
 				v-if="!revealed && activeCard == front"
 				@click="revealed = true"
+				id="reveal"
 			>
 				Reveal
 			</button>
@@ -69,5 +70,13 @@ defineProps<{
 
 #correct {
 	background-color: #1e9e47;
+}
+
+#reveal {
+	background-color:  #060c2c ;
+}
+
+.active {
+	 background: #2d3981 ;
 }
 </style>

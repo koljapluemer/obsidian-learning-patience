@@ -11,6 +11,12 @@
 #correct[data-v-040c75b6] {
   background-color: #1e9e47;
 }
+#reveal[data-v-040c75b6] {
+  background-color: #060c2c;
+}
+.active[data-v-040c75b6] {
+  background: #2d3981;
+}
 h2[data-v-ea994a51] {
   color: lightcoral;
 }
