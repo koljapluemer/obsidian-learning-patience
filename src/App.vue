@@ -1,9 +1,12 @@
 <template>
 	<h2>The Learn Patience</h2>
-	<div class="" v-if="!learnTagSet">
+	<div class="" id="intro-modal" v-if="!learnTagSet">
 		<label for="tagInput">Tag</label>
-		<input type="text" id="tagInput" :value="learnTag" />
-		<button @click="generateCards">Save</button>
+		<div class="">
+		#<input type="text" id="tagInput" v-model="learnTag" />
+
+		</div>
+		<button @click="generateCards">Let's Go</button>
 	</div>
 	<div class="" v-else>
 		<meter
@@ -44,12 +47,14 @@ const cards = ref([]);
 const generateCards = async () => {
 	learnTagSet.value = true;
 
+	console.log("generating cards with tag", learnTag.value);
+
 	// get all Obsidian notes with tag #vr
 	const allNotesWithTag = app.vault.getMarkdownFiles().filter((note) => {
 		let willBeIncluded = false;
 		const tags = this.app.metadataCache.getFileCache(note)?.tags;
 		if (tags) {
-			if (tags.filter((tag) => tag.tag === this.learnTag).length > 0) {
+			if (tags.filter((tag) => tag.tag == '#' + learnTag.value).length > 0) {
 				willBeIncluded = true;
 			}
 		}
@@ -60,7 +65,7 @@ const generateCards = async () => {
 	const notes = allNotesWithTag
 		.sort(() => Math.random() - Math.random())
 		.slice(0, 30);
-	console.log(notes);
+	console.log("picked notes:", notes);
 
 	this.cards = await Promise.all(
 		notes.map(
@@ -206,6 +211,12 @@ h2 {
 	gap: 8px;
 	margin-bottom: 8px;
 	min-height: 120px;
+}
+
+#intro-modal {
+	display: flex;
+	gap: 8px;
+	flex-direction: column;
 }
 
 .list-enter-active,
