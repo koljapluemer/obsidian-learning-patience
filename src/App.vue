@@ -117,6 +117,9 @@ const generateCards = async () => {
 		)
 	);
 
+	
+
+
 	// fill last row with 3 random notes
 	randomNotes = this.cards
 		.sort(() => Math.random() - Math.random())
