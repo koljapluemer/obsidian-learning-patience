@@ -1,26 +1,33 @@
 <template>
 	<h2>The Learn Patience</h2>
-	<meter
-		id="fuel"
-		min="3"
-		max="150"
-		low="50"
-		high="100"
-		:value="score"
-	></meter>
-	<div v-for="row in rows" class="row">
-		<TransitionGroup name="list">
-			<Card
-				v-for="card in row"
-				:key="card.front"
-				:front="card.front"
-				:back="card.back"
-				:revealed="card.revealed"
-				:activeCard="activeCard"
-				@handleWrong="handleWrong(card)"
-				@handleRight="handleRight(card)"
-			></Card>
-		</TransitionGroup>
+	<div class="" v-if="!learnTagSet">
+		<label for="tagInput">Tag</label>
+		<input type="text" id="tagInput" :value="learnTag" />
+		<button @click="generateCards">Save</button>
+	</div>
+	<div class="" v-else>
+		<meter
+			id="fuel"
+			min="3"
+			max="150"
+			low="50"
+			high="100"
+			:value="score"
+		></meter>
+		<div v-for="row in rows" class="row">
+			<TransitionGroup name="list">
+				<Card
+					v-for="card in row"
+					:key="card.front"
+					:front="card.front"
+					:back="card.back"
+					:revealed="card.revealed"
+					:activeCard="activeCard"
+					@handleWrong="handleWrong(card)"
+					@handleRight="handleRight(card)"
+				></Card>
+			</TransitionGroup>
+		</div>
 	</div>
 </template>
 
@@ -29,7 +36,8 @@ import Card from "./Card.vue";
 import { ref, watch, computed } from "vue";
 import { Transition } from "vue";
 
-const learnTag = ref("______");
+const learnTag = ref("");
+const learnTagSet = ref(false);
 
 // get all Obsidian notes with tag #vr
 const allNotesWithTag = app.vault.getMarkdownFiles().filter((note) => {
@@ -52,6 +60,7 @@ const cards = ref([]);
 this.cards = notes;
 
 const generateCards = async () => {
+	learnTagSet = true
 	this.cards = await Promise.all(
 		notes.map(
 			async (note) =>
@@ -82,6 +91,19 @@ const generateCards = async () => {
 				})
 		)
 	);
+
+	// fill last row with 3 random notes
+	randomNotes = this.cards
+		.sort(() => Math.random() - Math.random())
+		.slice(0, 3);
+	rows.value[3] = randomNotes;
+	// remove those 3 notes from the cards array
+	randomNotes.forEach((note) => {
+		const index = this.cards.indexOf(note);
+		this.cards.splice(index, 1);
+	});
+
+	activeCard.value = rows.value[3][0].front;
 };
 
 const handleRight = (card) => {
@@ -112,21 +134,6 @@ let rows = ref([[], [], [], []]);
 const finishedCards = ref([]);
 
 const activeCard = ref(null);
-
-generateCards().then(() => {
-	// fill last row with 3 random notes
-	randomNotes = this.cards
-		.sort(() => Math.random() - Math.random())
-		.slice(0, 3);
-	rows.value[3] = randomNotes;
-	// remove those 3 notes from the cards array
-	randomNotes.forEach((note) => {
-		const index = this.cards.indexOf(note);
-		this.cards.splice(index, 1);
-	});
-
-	activeCard.value = rows.value[3][0].front;
-});
 
 // watch the last row of rows, and if it has less than 3 cards, add a new one
 watch(
