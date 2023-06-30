@@ -177,16 +177,16 @@ watch(
 				const index = this.cards.indexOf(newCard);
 				this.cards.splice(index, 1);
 			}
-			// if row[0] has 7 cards or more, activate its leftmost card
-			if (rows.value[0].length >= 7) {
+			// if row[0] has 7 cards or more (or rows 1,2 and 3 are empty), activate its leftmost card
+			if (rows.value[0].length >= 7 || (rows.value[1].length == 0 && rows.value[2].length == 0 && rows.value[3].length == 0)) {
 				activeCard.value = rows.value[0][0].front;
 			}
-			// row row[1] has 5 cards or more, activate its leftmost card
-			else if (rows.value[1].length >= 5) {
+			// row row[1] has 5 cards or more (or rows 2 and 3 are empty), activate its leftmost card
+			else if (rows.value[1].length >= 5 || (rows.value[2].length == 0 && rows.value[3].length == 0)) {
 				activeCard.value = rows.value[1][0].front;
 			}
-			// if row[2] has 5 cards are more, activate its leftmost card
-			else if (rows.value[2].length >= 5) {
+			// if row[2] has 5 cards are more (or row 3 is empty), activate its leftmost card
+			else if (rows.value[2].length >= 5 || rows.value[3].length == 0) {
 				activeCard.value = rows.value[2][0].front;
 			} else {
 				// by default, activate last row leftmost card
