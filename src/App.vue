@@ -3,8 +3,7 @@
 	<div class="" id="intro-modal" v-if="!learnTagSet">
 		<label for="tagInput">Tag</label>
 		<div class="">
-		#<input type="text" id="tagInput" v-model="learnTag" />
-
+			#<input type="text" id="tagInput" v-model="learnTag" />
 		</div>
 		<button @click="generateCards">Let's Go</button>
 	</div>
@@ -32,7 +31,6 @@
 				></Card>
 			</TransitionGroup>
 		</div>
-	
 	</div>
 </template>
 
@@ -48,18 +46,17 @@ const cards = ref([]);
 
 // expose Markdown component to template
 
-
 const generateCards = async () => {
 	learnTagSet.value = true;
-
-	
 
 	// get all Obsidian notes with tag #vr
 	const allNotesWithTag = app.vault.getMarkdownFiles().filter((note) => {
 		let willBeIncluded = false;
 		const tags = this.app.metadataCache.getFileCache(note)?.tags;
 		if (tags) {
-			if (tags.filter((tag) => tag.tag == '#' + learnTag.value).length > 0) {
+			if (
+				tags.filter((tag) => tag.tag == "#" + learnTag.value).length > 0
+			) {
 				willBeIncluded = true;
 			}
 		}
@@ -70,9 +67,6 @@ const generateCards = async () => {
 	const notes = allNotesWithTag
 		.sort(() => Math.random() - Math.random())
 		.slice(0, 30);
-	
-
-	
 
 	this.cards = await Promise.all(
 		notes.map(
@@ -80,8 +74,6 @@ const generateCards = async () => {
 				await this.app.vault.read(note).then((content) => {
 					const splitCard = content.split("---");
 					const metadata = this.app.metadataCache.getFileCache(note);
-					
-					
 
 					let front = "";
 					let back = "";
@@ -98,14 +90,13 @@ const generateCards = async () => {
 						// remove every word starting with # (words are separated by spaces, dashes do not end words)
 						front = front.replace(/#\w+/g, "");
 						back = back.replace(/#\w+/g, "");
-						
+
 						return {
 							front: front,
 							back: back,
 							revealed: false,
 						};
 					} catch (error) {
-						
 						return {
 							front: "error",
 							back: "error",
@@ -116,9 +107,6 @@ const generateCards = async () => {
 				})
 		)
 	);
-
-	
-
 
 	// fill last row with 3 random notes
 	randomNotes = this.cards
@@ -177,21 +165,29 @@ watch(
 				const index = this.cards.indexOf(newCard);
 				this.cards.splice(index, 1);
 			}
-			// if row[0] has 7 cards or more (or rows 1,2 and 3 are empty), activate its leftmost card
-			if (rows.value[0].length >= 7 || (rows.value[1].length == 0 && rows.value[2].length == 0 && rows.value[3].length == 0)) {
-				activeCard.value = rows.value[0][0].front;
-			}
-			// row row[1] has 5 cards or more (or rows 2 and 3 are empty), activate its leftmost card
-			else if (rows.value[1].length >= 5 || (rows.value[2].length == 0 && rows.value[3].length == 0)) {
-				activeCard.value = rows.value[1][0].front;
-			}
-			// if row[2] has 5 cards are more (or row 3 is empty), activate its leftmost card
-			else if (rows.value[2].length >= 5 || rows.value[3].length == 0) {
-				activeCard.value = rows.value[2][0].front;
-			} else {
-				// by default, activate last row leftmost card
-				activeCard.value = rows.value[3][0].front;
-			}
+		}
+		// if row[0] has 7 cards or more (or rows 1,2 and 3 are empty), activate its leftmost card
+		if (
+			rows.value[0].length >= 7 ||
+			(rows.value[1].length == 0 &&
+				rows.value[2].length == 0 &&
+				rows.value[3].length == 0)
+		) {
+			activeCard.value = rows.value[0][0].front;
+		}
+		// row row[1] has 5 cards or more (or rows 2 and 3 are empty), activate its leftmost card
+		else if (
+			rows.value[1].length >= 5 ||
+			(rows.value[2].length == 0 && rows.value[3].length == 0)
+		) {
+			activeCard.value = rows.value[1][0].front;
+		}
+		// if row[2] has 5 cards are more (or row 3 is empty), activate its leftmost card
+		else if (rows.value[2].length >= 5 || rows.value[3].length == 0) {
+			activeCard.value = rows.value[2][0].front;
+		} else {
+			// by default, activate last row leftmost card
+			activeCard.value = rows.value[3][0].front;
 		}
 	},
 	{ deep: true }
