@@ -1,24 +1,37 @@
-## Develop your own plugins with Vue3
+# Learning Patience
 
+This is an implementation of the *Learning Patience* described in Leitner's book *So Lernt Man Lernen* (not to be confused with the much more famous [Leitner System](https://en.wikipedia.org/wiki/Leitner_system)).
 
-## Init steps
+## Purpose
 
-1. Clone this repository to your `.obsidian\plugins` directory, and move into it.
+The *Learning Patience* is a method to quickly memorize medium-large sets of learning material that is very similar to each other in structure and follow no inherent logic. Such study sets may be:
 
-2. Run `npm install` to install all the stuff you need, Including: 
-   + vue3 sfc support
-   + vue3 tsx support
-   + typescript
-   + esbuild
+* phone numbers
+* dates
+* birthdays
+* formulas
+* conjugations or other grammar
+* similar sounding vocabulary
+* abbreviations
+* ...
 
-3. Run `npm run dev` to compile code and generate a `main.js`, which is the final output. Your `main.js` will be updated simultaneously with the change of your source code files.
+## The Game
 
-If above steps work, you can turn on 'Vue Template' plugin in Obsidian. Click the *dice* like button on the left ribbon, a new tab will open on the right and says *"Hello,Developer!"*.
+## Using This Plugin
 
-4. When you get ready to build a release, run `npm run build` to create it. This will remove all codemaps and minify code size.
+### Installation
 
+### Preparation
 
+## Limitations & Roadmap
 
-## Notice
+This plugin is still in early development and does not feel polished yet. Here are some shortcomings that may or may not be improved in the future:
 
-+ [hot-reload](https://forum.obsidian.md/t/plugin-release-for-developers-hot-reload-the-plugin-s-youre-developing/12185) plugin may be very helpful in your developing. It reloads the plugin whose `main.js` file changes, so you don't need do it yourself every time you make changes to code.
+* Notes have to be set up exactly as described above. Alternative templates for denoting the front and back of flash cards or having multiple learning items on a single not are currently unsupported.
+* Images on flash cards are currently not working
+
+## Contribute
+
+Contributions of any kind are welcome. Feel free to open an issue if you need help, have ideas or want to know something. 
+
+If you want to modify the plugin, you can simply clone this repository and move it to your plugin directory. It can be run with `npm i` and `npm run dev`, like any plugin based on the [Obsidian Plugin Template](https://github.com/obsidianmd/obsidian-sample-plugin).
