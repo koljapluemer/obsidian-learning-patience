@@ -1,11 +1,16 @@
 <template>
-	<h2>The Learn Patience</h2>
+	<h1>The Learn Patience</h1>
 	<div class="" id="intro-modal" v-if="!learnTagSet">
-		<label for="tagInput">Tag</label>
-		<div class="">
-			#<input type="text" id="tagInput" v-model="learnTag" />
+		<div class="card">
+		<h3>Quickstart</h3>
+			<div class="flex">
+				<label for="tagInput">Tag:</label>
+				<div class="">
+					#<input type="text" id="tagInput" v-model="learnTag" />
+				</div>
+				<button @click="generateCards">Let's Go</button>
+			</div>
 		</div>
-		<button @click="generateCards">Let's Go</button>
 	</div>
 	<div class="" v-else>
 		<meter
@@ -206,8 +211,14 @@ const score = computed(() => {
 </script>
 
 <style scoped>
-h2 {
-	color: lightcoral;
+
+.flex {
+	display: flex;
+	gap: 6px;
+	align-items: center;
+}
+h1 {
+	text-align: center;
 }
 
 #front {
@@ -226,6 +237,7 @@ h2 {
 	display: flex;
 	gap: 8px;
 	flex-direction: column;
+	align-items: center;
 }
 
 .list-enter-active,
