@@ -23,6 +23,17 @@ The *Learning Patience* is a method to quickly memorize medium-large sets of lea
 
 ### Preparation
 
+To use, you need a number of notes formatted like this:
+
+```
+front
+---
+back
+
+#some-specific-tag
+
+```
+
 ## Limitations & Roadmap
 
 This plugin is still in early development and does not feel polished yet. Here are some shortcomings that may or may not be improved in the future:
