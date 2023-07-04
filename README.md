@@ -21,6 +21,8 @@ The *Learning Patience* is a method to quickly memorize medium-large sets of lea
 
 ### Installation
 
+This plugin is not yet available as community plugin (this will hopefully change in the future).
+
 ### Preparation
 
 To use, you need a number of notes formatted like this:
