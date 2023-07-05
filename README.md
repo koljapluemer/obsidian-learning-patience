@@ -17,6 +17,8 @@ The *Learning Patience* is a method to quickly memorize medium-large sets of lea
 
 ## The Game
 
+*Learning Patience* is essentially a rapid mode of Spaced Repetition.
+
 ## Using This Plugin
 
 ### Installation
