@@ -19,7 +19,7 @@ The *Learning Patience* is a method to quickly memorize medium-large sets of lea
 
 ![overview of the learning patience game in Leitner's book](patience.png)
 
-*Learning Patience* is essentially a rapid mode of Spaced Repetition.
+*Learning Patience* is essentially rapid mode Spaced Repetition.
 
 ## Using This Plugin
 
