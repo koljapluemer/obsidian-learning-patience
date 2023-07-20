@@ -21,10 +21,7 @@
 			high="100"
 			:value="score"
 		></meter>
-		<div class="meter">
-			<span :style="{width: 25 + '%'}"></span>
-		</div>
-
+	
 		<div v-for="row in rows" class="row">
 			<TransitionGroup name="list">
 				<Card
@@ -270,4 +267,9 @@ h1 {
 .list-leave-active {
 	position: absolute;
 }
+
+meter {
+	width: 100%;
+}
+
 </style>

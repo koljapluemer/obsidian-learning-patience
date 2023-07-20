@@ -63,5 +63,8 @@ h1[data-v-ea994a51] {
 .list-leave-active[data-v-ea994a51] {
   position: absolute;
 }
+meter[data-v-ea994a51] {
+  width: 100%;
+}
 
 /* src/main.css */
