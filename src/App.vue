@@ -2,7 +2,7 @@
 	<h1>The Learn Patience</h1>
 	<div class="" id="intro-modal" v-if="!learnTagSet">
 		<div class="card">
-		<h3>Quickstart</h3>
+			<h3>Quickstart</h3>
 			<div class="flex">
 				<label for="tagInput">Tag:</label>
 				<div class="">
@@ -21,6 +21,10 @@
 			high="100"
 			:value="score"
 		></meter>
+		<div class="meter">
+			<span :style="{width: 25 + '%'}"></span>
+		</div>
+
 		<div v-for="row in rows" class="row">
 			<TransitionGroup name="list">
 				<Card
@@ -211,7 +215,6 @@ const score = computed(() => {
 </script>
 
 <style scoped>
-
 .flex {
 	display: flex;
 	gap: 6px;
